@@ -1,6 +1,6 @@
 # Repo Setup (for agents)
 
-This repo runs Voxtral dictation in Docker and exposes a host hotkey.
+This repo runs Whisper dictation in Docker and exposes a host hotkey.
 
 ## One-time setup
 
@@ -21,8 +21,8 @@ make enable-service
 
 Set environment variables before calling the hotkey script:
 
-- `VOXTRAL_LANG=auto` (default), `en`, `ru`, etc.
-- `VOXTRAL_AUDIO_DEVICE=hw:1,0` to force mic device
+- `WHISPER_LANG=auto` (default), `en`, `ru`, etc.
+- `WHISPER_AUDIO_DEVICE=hw:1,0` to force mic device
 
 ## No rebuilds for script changes
 
@@ -31,6 +31,6 @@ Set environment variables before calling the hotkey script:
 ## Notes
 
 - Model cache is persisted to `~/.cache/huggingface`
-- Container name: `voxtral-app`
+- Container name: `whisper-app`
 - Start/stop via `make run` / `make stop`
 - Autostart via `make enable-service`

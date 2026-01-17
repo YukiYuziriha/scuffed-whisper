@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "=== Installing Voxtral Dictation ==="
+echo "=== Installing Whisper Dictation ==="
 echo ""
 
 if ! command -v docker &> /dev/null; then
