@@ -13,13 +13,13 @@ WHISPER_LANG_MAP = {
 }
 
 
-def sanitize_language(value, default="en"):
+def sanitize_language(value, default=None):
     if not value:
         return default
     value = value.strip().lower()
     if not value or value == "auto":
-        return default
-    return WHISPER_LANG_MAP.get(value, default)
+        return None
+    return WHISPER_LANG_MAP.get(value, value)
 
 
 def sanitize_output_language(value):
@@ -48,16 +48,17 @@ def load_model():
 
 def transcribe(audio_path, language=None, output_language=None, print_output=True):
     pipe = load_model()
-    language = sanitize_language(language or os.getenv("WHISPER_LANG", "en"))
+    language = sanitize_language(language or os.getenv("WHISPER_LANG", "auto"))
     output_language = sanitize_output_language(
         output_language or os.getenv("WHISPER_OUTPUT_LANG", "")
     )
 
     generate_kwargs = {
-        "language": language,
         "task": "transcribe",
         "max_new_tokens": 444,
     }
+    if language:
+        generate_kwargs["language"] = language
     if output_language:
         generate_kwargs["language"] = output_language
 

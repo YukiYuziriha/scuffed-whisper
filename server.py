@@ -8,7 +8,7 @@ import transcribe
 
 HOST = "0.0.0.0"
 PORT = int(os.getenv("WHISPER_PORT", "8610"))
-DEFAULT_LANGUAGE = transcribe.sanitize_language(os.getenv("WHISPER_LANG", "en"))
+DEFAULT_LANGUAGE = transcribe.sanitize_language(os.getenv("WHISPER_LANG", "auto"))
 DEFAULT_OUTPUT_LANGUAGE = transcribe.sanitize_output_language(
     os.getenv("WHISPER_OUTPUT_LANG", "")
 )

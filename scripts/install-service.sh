@@ -31,7 +31,7 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/docker run -d --name whisper-app \
   -e HF_HUB_DISABLE_PROGRESS_BARS=1 \
   -e WHISPER_MODEL=${WHISPER_MODEL:-openai/whisper-base} \
-  -e WHISPER_LANG=${WHISPER_LANG:-en} \
+  -e WHISPER_LANG=${WHISPER_LANG:-auto} \
   -e WHISPER_OUTPUT_LANG=${WHISPER_OUTPUT_LANG:-} \
   -e WHISPER_PORT=${WHISPER_PORT:-8610} \
   -p 127.0.0.1:${WHISPER_PORT:-8610}:${WHISPER_PORT:-8610} \
@@ -42,7 +42,7 @@ ExecStart=/usr/bin/docker run -d --name whisper-app \
   whisper-dictation sleep infinity
 ExecStartPost=/usr/bin/docker exec -d \
   -e WHISPER_MODEL=${WHISPER_MODEL:-openai/whisper-base} \
-  -e WHISPER_LANG=${WHISPER_LANG:-en} \
+  -e WHISPER_LANG=${WHISPER_LANG:-auto} \
   -e WHISPER_OUTPUT_LANG=${WHISPER_OUTPUT_LANG:-} \
   -e WHISPER_PORT=${WHISPER_PORT:-8610} \
   whisper-app python /app/server.py

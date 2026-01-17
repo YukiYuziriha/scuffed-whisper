@@ -1,7 +1,7 @@
 .PHONY: build run stop clean help setup enable-service disable-service daemon daemon-stop
 
 WHISPER_MODEL ?= openai/whisper-base
-WHISPER_LANG ?= en
+WHISPER_LANG ?= auto
 WHISPER_OUTPUT_LANG ?=
 WHISPER_PORT ?= 8610
 

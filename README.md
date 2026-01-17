@@ -38,7 +38,7 @@ make test
 
 ## Configuration
 
-- `WHISPER_LANG` (default: `en`) - input language hint. Supports `en`, `ru`, `english`, `russian`.
+- `WHISPER_LANG` (default: `auto`) - input language hint. Supports `auto`, `en`, `ru`, `english`, `russian`. Use `auto` to let Whisper detect the language.
 - `WHISPER_OUTPUT_LANG` - strict output language hint (e.g., `en` or `ru`). Forces transcription to this language.
 - `WHISPER_MODEL` (default: `openai/whisper-base`) - model id (restart daemon/service after changing). Available models: `tiny`, `base`, `small`, `medium`, `large-v3`, `large-v3-turbo`.
 - `WHISPER_PORT` (default: `8610`) - daemon port (host).
