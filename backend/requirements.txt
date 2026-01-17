@@ -4,4 +4,3 @@ torch>=2.0.0
 transformers>=4.35.0
 sounddevice>=0.4.6
 soundfile>=0.12.1
-pyaudio>=0.2.13
