@@ -53,8 +53,16 @@ make test
 
 ## Autostart (Systemd User Service)
 
+The service keeps the container and daemon running in the background and will automatically start on the next login.
+
+Enable autostart:
 ```bash
 make enable-service
+```
+
+Verify service is running and enabled:
+```bash
+systemctl --user status whisper-dictate.service
 ```
 
 To disable:
@@ -94,6 +102,7 @@ make enable-service
 
 ## Troubleshooting
 
+- Check service status: `systemctl --user status whisper-dictate.service`
 - Check container: `docker ps`
 - View logs: `docker logs whisper-app`
 - Stop: `make stop`
