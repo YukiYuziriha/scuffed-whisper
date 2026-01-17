@@ -53,11 +53,21 @@ def transcribe(audio_path, language=None, output_language=None, print_output=Tru
         output_language or os.getenv("WHISPER_OUTPUT_LANG", "")
     )
 
-    generate_kwargs = {"language": language, "task": "transcribe"}
+    generate_kwargs = {
+        "language": language,
+        "task": "transcribe",
+        "max_new_tokens": 444,
+    }
     if output_language:
         generate_kwargs["language"] = output_language
 
-    result = pipe(audio_path, generate_kwargs=generate_kwargs)
+    result = pipe(
+        audio_path,
+        generate_kwargs=generate_kwargs,
+        chunk_length_s=30,
+        stride_length_s=5,
+        return_timestamps=False,
+    )
     text = result["text"]
 
     if print_output:
