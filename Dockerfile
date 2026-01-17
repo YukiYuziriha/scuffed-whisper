@@ -11,10 +11,10 @@ RUN pip install --no-cache-dir \
     accelerate \
     librosa \
     scipy \
-    soundfile \
-    mistral-common
+    soundfile
 
 WORKDIR /app
 COPY transcribe.py .
+COPY server.py .
 
 CMD ["python", "transcribe.py"]

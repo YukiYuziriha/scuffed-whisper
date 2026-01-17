@@ -1,41 +1,73 @@
 import os
 import sys
 import torch
-from transformers import AutoProcessor, VoxtralForConditionalGeneration
+from transformers import pipeline
 
-MODEL_ID = "mistralai/Voxtral-Mini-3B-2507"
-LANGUAGE = os.getenv("VOXTRAL_LANG", "en").strip()
-if not LANGUAGE or LANGUAGE.lower() == "auto":
-    LANGUAGE = "en"
+DEFAULT_MODEL_ID = "openai/whisper-base"
+MODEL_ID = os.getenv("WHISPER_MODEL", DEFAULT_MODEL_ID).strip() or DEFAULT_MODEL_ID
+WHISPER_LANG_MAP = {
+    "en": "english",
+    "english": "english",
+    "ru": "russian",
+    "russian": "russian",
+}
 
-processor = AutoProcessor.from_pretrained(MODEL_ID)
-model = VoxtralForConditionalGeneration.from_pretrained(
-    MODEL_ID,
-    dtype=torch.float32,
-    device_map="cpu",
-)
 
-def transcribe(audio_path):
-    request_kwargs = {
-        "audio": audio_path,
-        "model_id": MODEL_ID,
-        "language": LANGUAGE,
-    }
+def sanitize_language(value, default="en"):
+    if not value:
+        return default
+    value = value.strip().lower()
+    if not value or value == "auto":
+        return default
+    return WHISPER_LANG_MAP.get(value, default)
 
-    inputs = processor.apply_transcription_request(**request_kwargs)
-    inputs = inputs.to("cpu", dtype=torch.float32)
 
-    outputs = model.generate(**inputs, max_new_tokens=500)
-    text = processor.batch_decode(
-        outputs[:, inputs.input_ids.shape[1]:],
-        skip_special_tokens=True,
-    )[0]
+def sanitize_output_language(value):
+    if not value:
+        return ""
+    value = value.strip().lower()
+    if not value or value == "auto":
+        return ""
+    return WHISPER_LANG_MAP.get(value, "")
 
-    print(text, flush=True)
+
+_pipe = None
+
+
+def load_model():
+    global _pipe
+    if _pipe is None:
+        _pipe = pipeline(
+            task="automatic-speech-recognition",
+            model=MODEL_ID,
+            device="cpu",
+            torch_dtype=torch.float32,
+        )
+    return _pipe
+
+
+def transcribe(audio_path, language=None, output_language=None, print_output=True):
+    pipe = load_model()
+    language = sanitize_language(language or os.getenv("WHISPER_LANG", "en"))
+    output_language = sanitize_output_language(
+        output_language or os.getenv("WHISPER_OUTPUT_LANG", "")
+    )
+
+    generate_kwargs = {"language": language, "task": "transcribe"}
+    if output_language:
+        generate_kwargs["language"] = output_language
+
+    result = pipe(audio_path, generate_kwargs=generate_kwargs)
+    text = result["text"]
+
+    if print_output:
+        print(text, flush=True)
     return text
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python transcribe.py <audio_path>", file=sys.stderr)
         sys.exit(1)
+
     transcribe(sys.argv[1])
