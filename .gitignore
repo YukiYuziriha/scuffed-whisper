@@ -1,1 +1,24 @@
 *.wav
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Tauri
+src-tauri/target/
+dist/
+
+# Python virtual envs
+venv/
+.venv/
+env/
+
+# Whisper model cache
+.whisper-dictation/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,114 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 10;
+}
+
+.mic-icon {
+  width: 64px;
+  height: 64px;
+  color: white;
+  animation: none;
+}
+
+.overlay-recording .mic-icon {
+  color: #ff4444;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.overlay-processing .mic-icon {
+  color: #4488ff;
+  animation: spin 2s linear infinite;
+}
+
+.overlay-error .mic-icon {
+  color: #ff0000;
+  animation: shake 0.5s ease-in-out;
+}
+
+.status-text {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.overlay-recording .pulse-ring {
+  background: rgba(255, 68, 68, 0.3);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.overlay-processing .pulse-ring {
+  background: rgba(68, 136, 255, 0.3);
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+.overlay-error .pulse-ring {
+  background: rgba(255, 0, 0, 0.3);
+  animation: pulse-ring 0.5s ease-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
